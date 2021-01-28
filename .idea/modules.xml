@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ImportSDKDemo.iml" filepath="$PROJECT_DIR$/ImportSDKDemo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/ImportSDKDemo-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/ImportSDKDemo-app.iml" group="ImportSDKDemo/app" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/new 5-ImportSDKDemo.iml" filepath="$PROJECT_DIR$/.idea/modules/new 5-ImportSDKDemo.iml" group="ImportSDKDemo" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/new 5-ImportSDKDemo-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/new 5-ImportSDKDemo-app.iml" group="ImportSDKDemo/app" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/new-new 5-ImportSDKDemo.iml" filepath="$PROJECT_DIR$/.idea/modules/new-new 5-ImportSDKDemo.iml" group="ImportSDKDemo" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/new-new 5-ImportSDKDemo-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/new-new 5-ImportSDKDemo-app.iml" group="ImportSDKDemo/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Inventory-management-android-app.iml" filepath="$PROJECT_DIR$/.idea/modules/Inventory-management-android-app.iml" group="Inventory-management-android-app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Inventory-management-android-app/app" />
     </modules>
   </component>
 </project>
