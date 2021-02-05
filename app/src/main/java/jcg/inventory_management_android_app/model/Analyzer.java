@@ -40,33 +40,17 @@ public class Analyzer implements ImageAnalysis.Analyzer {
                         .build();
     }
 
-    public void analyze2() {
+    public void start(Bitmap bitmap) {
 
-        int idImage;
-        currentImage = 0;
+        InputImage image = InputImage.fromBitmap(bitmap, 0);
+        //InputImage image = InputImage.fromBitmap(bitmap, rotationDegree);
+        // Pass image to an ML Kit Vision API
+        // ...
 
-        ArrayList<Integer> arrayList = new ArrayList<>();
-        arrayList.add( R.drawable.barcode1);
-        arrayList.add( R.drawable.barcode2);
-        arrayList.add( R.drawable.barcode3);
-        arrayList.add( R.drawable.barcode4);
-        arrayList.add( R.drawable.barcode5);
+        //BarcodeScanner scanner = BarcodeScanning.getClient(options);
+        BarcodeScanner scanner = BarcodeScanning.getClient();
 
-        for (int i = 0; i < arrayList.size(); i++) {
-
-            idImage = arrayList.get(i);
-
-            Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), idImage);
-            InputImage image = InputImage.fromBitmap(bitmap, 0);
-            //InputImage image = InputImage.fromBitmap(bitmap, rotationDegree);
-            // Pass image to an ML Kit Vision API
-            // ...
-
-            //BarcodeScanner scanner = BarcodeScanning.getClient(options);
-            BarcodeScanner scanner = BarcodeScanning.getClient();
-
-            processImage(scanner, image);
-        }
+        processImage(scanner, image);
 
     }
 
@@ -93,9 +77,8 @@ public class Analyzer implements ImageAnalysis.Analyzer {
 
     void getInfoFromBarcodes(List<Barcode> barcodes){
 
-        currentImage ++;
         if (barcodes.size() == 0)
-            Toast.makeText(context, "Error en Imagen " + currentImage, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Error al escanear Imagen" , Toast.LENGTH_SHORT).show();
 
         else
             for (Barcode barcode: barcodes) {
@@ -107,7 +90,8 @@ public class Analyzer implements ImageAnalysis.Analyzer {
 
                 int valueType = barcode.getValueType();
 
-                Toast.makeText(context,  "'" + rawValue + "' en imagen " + currentImage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,  "Raw Value: '" + rawValue + "'" , Toast.LENGTH_SHORT).show();
+
 
                 /*
                 // See API reference for complete list of supported types

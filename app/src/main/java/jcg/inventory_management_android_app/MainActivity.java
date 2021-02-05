@@ -4,12 +4,14 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -29,14 +31,25 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter mBluetoothAdapter = null;
     private BluetoothSocket socket = null;
     private ImageView imageView;
+    private Button captureButton;
     int contador;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_main);
 
         imageView =  findViewById(R.id.imageView);
+
+        //Capture Button
+        captureButton = findViewById(R.id.captureButton);
+        captureButton.setOnClickListener(view -> {
+
+            Intent intent = new Intent(this, CaptureActivity.class);
+            intent.putExtra("image", imageToByteArray(imageView.getDrawable()));
+            startActivity(intent);
+        });
 
         //Bluetooth initialize
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -111,16 +124,17 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
                     bytes = socketInputStream.read(buffer);
-                    if (bytes == 32 && new String(buffer,0,bytes).equals(KEY)){
+                    if (bytes == 32 && new String(buffer,0,bytes).equals(END_OF_FRAME_KEY)){
 
                         Bitmap bitmap = BitmapFactory.decodeByteArray(imgBuffer, 0, pos);
                         runOnUiThread(() -> imageView.setImageBitmap(bitmap));
+
+                        Log.d("BUFFER LENGTH", String.valueOf(pos));
+
                         pos = 0;
                         buffer = new byte[256];
                         imgBuffer = new byte[2048 * 2048];
 
-                        contador ++;
-                        Log.d(TAG, String.valueOf(contador));
                     }else{
                         System.arraycopy(buffer,0,imgBuffer,pos,bytes);
                         pos += bytes;
@@ -146,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
         Bitmap bitmap = ((BitmapDrawable)image).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, CAPTURE_COMPRESS_QUALITY, stream);
         return stream.toByteArray();
     }
 
