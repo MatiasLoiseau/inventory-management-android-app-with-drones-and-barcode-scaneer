@@ -1,12 +1,12 @@
 package jcg.inventory_management_android_app;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import jcg.inventory_management_android_app.model.Analyzer;
@@ -23,6 +23,9 @@ public class CaptureActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_capture);
 
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         imageView =  findViewById(R.id.imageView);
         byte[] b = (getIntent().getExtras()).getByteArray("image");
 
@@ -38,4 +41,20 @@ public class CaptureActivity extends AppCompatActivity {
         });
 
     }
+
+
+    //Title Bar back button
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 }
