@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Inventory-management-android-app.iml" filepath="$PROJECT_DIR$/.idea/modules/Inventory-management-android-app.iml" group="Inventory-management-android-app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Inventory-management-android-app-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Inventory-management-android-app-app.iml" group="Inventory-management-android-app/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="Inventory-management-android-app/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/inventory-management-android-app-with-drones-and-barcode-scaneer-Inventory-management-android-app.iml" filepath="$PROJECT_DIR$/.idea/modules/inventory-management-android-app-with-drones-and-barcode-scaneer-Inventory-management-android-app.iml" group="Inventory-management-android-app" />
     </modules>
   </component>
 </project>

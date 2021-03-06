@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Inventory-management-android-app</string>
     <string name="captureButton">Capturar Frame</string>
-    <string name="analyzeButton">Escanear Codigo</string>
+    <string name="analyzeButton">Escanear Código</string>
+    <string name="addButton">Agregar Código</string>
+    <string name="errorButton">Error</string>
+    <string name="changeViewButton">Change View</string>
 </resources>

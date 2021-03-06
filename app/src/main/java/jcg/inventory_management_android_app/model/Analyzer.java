@@ -28,7 +28,7 @@ import jcg.inventory_management_android_app.R;
 public class Analyzer implements ImageAnalysis.Analyzer {
 
     Context context;
-    int currentImage;
+    String rawValue;
     BarcodeScannerOptions options;
 
     public Analyzer(Context context) {
@@ -38,6 +38,11 @@ public class Analyzer implements ImageAnalysis.Analyzer {
                                 Barcode.FORMAT_QR_CODE,
                                 Barcode.FORMAT_AZTEC)
                         .build();
+    }
+
+    public String getRawValue(){
+
+        return rawValue;
     }
 
     public void start(Bitmap bitmap) {
@@ -53,9 +58,6 @@ public class Analyzer implements ImageAnalysis.Analyzer {
         processImage(scanner, image);
 
     }
-
-
-
 
     void processImage(BarcodeScanner scanner, InputImage image){
 
@@ -86,7 +88,7 @@ public class Analyzer implements ImageAnalysis.Analyzer {
                 Rect bounds = barcode.getBoundingBox();
                 Point[] corners = barcode.getCornerPoints();
 
-                String rawValue = barcode.getRawValue();
+                rawValue = barcode.getRawValue();
 
                 int valueType = barcode.getValueType();
 

@@ -11,8 +11,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -21,6 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+
+import jcg.inventory_management_android_app.model.Analyzer;
 
 import static jcg.inventory_management_android_app.model.BluetoothConstants.*;
 
@@ -31,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter mBluetoothAdapter = null;
     private BluetoothSocket socket = null;
     private ImageView imageView;
-    private Button captureButton;
-    int contador;
+    private ArrayList<String> barcodeArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,16 +45,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         imageView =  findViewById(R.id.imageView);
-
-        //Capture Button
-        captureButton = findViewById(R.id.captureButton);
-        captureButton.setOnClickListener(view -> {
-
-            Intent intent = new Intent(this, CaptureActivity.class);
-            intent.putExtra("image", imageToByteArray(imageView.getDrawable()));
-            startActivity(intent);
-        });
-
+        
+        buttonsImplementations();
+        
         //Bluetooth initialize
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (mBluetoothAdapter == null) {
@@ -65,6 +62,47 @@ public class MainActivity extends AppCompatActivity {
 
         } else
             initializeThread();
+
+    }
+
+    private void buttonsImplementations() {
+
+        Button changeViewButton;
+        Analyzer analyzer = new Analyzer(this);
+        ArrayList<String> barcodeArray = new ArrayList<>();
+        
+        //Analyze Button
+        Button analyzeButton = findViewById(R.id.analyzeButton);
+        analyzeButton.setOnClickListener(view -> {
+
+            Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
+            analyzer.start(image);
+        });
+
+        //Add Button
+        Button addButton = findViewById(R.id.addButton);
+        addButton.setOnClickListener(view -> {
+
+            barcodeArray.add(analyzer.getRawValue());
+            Toast.makeText(this, "Se agregó un codigo a la lista", Toast.LENGTH_SHORT).show();
+
+        });
+
+        ListView listView = findViewById(R.id.list_view);
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_list_item_1,
+                barcodeArray );
+
+        listView.setAdapter(arrayAdapter);
+
+        //Change View Button
+        changeViewButton = findViewById(R.id.changeViewButton);
+        changeViewButton.setOnClickListener(view -> {
+
+            arrayAdapter.notifyDataSetChanged();
+        });
 
     }
 
@@ -155,15 +193,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-    private byte[] imageToByteArray(Drawable image){
-
-        Bitmap bitmap = ((BitmapDrawable)image).getBitmap();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, CAPTURE_COMPRESS_QUALITY, stream);
-        return stream.toByteArray();
-    }
-
 
     @Override
     protected void onDestroy() {
