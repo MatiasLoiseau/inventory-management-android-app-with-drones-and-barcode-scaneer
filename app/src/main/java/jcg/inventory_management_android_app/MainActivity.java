@@ -5,27 +5,19 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
-import jcg.inventory_management_android_app.model.Analyzer;
 
 import static jcg.inventory_management_android_app.model.BluetoothConstants.*;
 
@@ -35,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private BluetoothAdapter mBluetoothAdapter = null;
     private BluetoothSocket socket = null;
-    private ImageView imageView;
+    private TextView textView;
     private ArrayList<String> barcodeArray;
 
     @Override
@@ -44,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_main);
 
-        imageView =  findViewById(R.id.imageView);
+        textView =  findViewById(R.id.textView);
         
         buttonsImplementations();
         
@@ -68,22 +60,13 @@ public class MainActivity extends AppCompatActivity {
     private void buttonsImplementations() {
 
         Button changeViewButton;
-        Analyzer analyzer = new Analyzer(this);
         ArrayList<String> barcodeArray = new ArrayList<>();
-        
-        //Analyze Button
-        Button analyzeButton = findViewById(R.id.analyzeButton);
-        analyzeButton.setOnClickListener(view -> {
-
-            Bitmap image = ((BitmapDrawable)imageView.getDrawable()).getBitmap();
-            analyzer.start(image);
-        });
 
         //Add Button
         Button addButton = findViewById(R.id.addButton);
         addButton.setOnClickListener(view -> {
 
-            barcodeArray.add(analyzer.getRawValue());
+            barcodeArray.add(textView.toString());
             Toast.makeText(this, "Se agregó un codigo a la lista", Toast.LENGTH_SHORT).show();
 
         });
@@ -154,29 +137,18 @@ public class MainActivity extends AppCompatActivity {
 
             // Keep looping to listen for received messages
             byte[] buffer = new byte[256];
-            byte[] imgBuffer = new byte[2048 * 2048];
-            int pos = 0;
             int bytes;
 
             while (true) {
                 try {
 
                     bytes = socketInputStream.read(buffer);
-                    if (bytes == 32 && new String(buffer,0,bytes).equals(END_OF_FRAME_KEY)){
 
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(imgBuffer, 0, pos);
-                        runOnUiThread(() -> imageView.setImageBitmap(bitmap));
+                    String code = new String(buffer,0,bytes);
 
-                        Log.d("BUFFER LENGTH", String.valueOf(pos));
+                    runOnUiThread(() -> textView.setText(code));
 
-                        pos = 0;
-                        buffer = new byte[256];
-                        imgBuffer = new byte[2048 * 2048];
-
-                    }else{
-                        System.arraycopy(buffer,0,imgBuffer,pos,bytes);
-                        pos += bytes;
-                    }
+                    buffer = new byte[256];
 
                 } catch (IOException e) {
                     e.printStackTrace();

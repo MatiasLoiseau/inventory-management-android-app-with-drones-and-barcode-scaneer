@@ -7,8 +7,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
+        android:id="@+id/textView"
+        android:textSize="30sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginRight="300dp"
